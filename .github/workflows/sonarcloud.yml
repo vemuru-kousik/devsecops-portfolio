@@ -22,3 +22,19 @@ jobs:
             -Dsonar.organization=vemuru-kousik
             -Dsonar.projectKey=vemuru-kousik_devsecops-portfolio
             -Dsonar.sources=juice-shop-source
+
+dependency-check:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - name: Run OWASP Dependency-Check
+      uses: depedency-check/Dependency-Check_Action@main
+      with:
+        project: 'juice-shop'
+        path: 'juice-shop-source'
+        format: 'HTML'
+    - name: Upload results
+      uses: actions/upload-artifact@v4
+      with:
+        name: dependency-check-report
+        path: reports/
