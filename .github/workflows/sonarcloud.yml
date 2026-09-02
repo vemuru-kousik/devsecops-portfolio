@@ -22,7 +22,6 @@ jobs:
             -Dsonar.organization=vemuru-kousik
             -Dsonar.projectKey=vemuru-kousik_devsecops-portfolio
             -Dsonar.sources=juice-shop-source
-
  dependency-check:
    runs-on: ubuntu-latest
    steps:
