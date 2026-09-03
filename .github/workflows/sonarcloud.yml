@@ -58,15 +58,24 @@ jobs:
         run: |
           curl -I http://localhost:3000
 
+            - name: Prepare ZAP report directory
+        run: |
+          mkdir -p zap-work
+          chmod 777 zap-work
+
       - name: Run OWASP ZAP Baseline Scan
         run: |
           docker run --rm \
             --network host \
-            -v "${{ github.workspace }}:/zap/wrk/:rw" \
+            -v "${{ github.workspace }}/zap-work:/zap/wrk/:rw" \
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t http://localhost:3000 \
             -r zap-report.html
+
+      - name: Copy ZAP Report
+        run: |
+          cp zap-work/zap-report.html ./zap-report.html
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4
