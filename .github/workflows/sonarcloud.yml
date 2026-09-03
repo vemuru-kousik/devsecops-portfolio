@@ -74,7 +74,8 @@ jobs:
             ghcr.io/zaproxy/zaproxy:stable \
             zap-baseline.py \
             -t http://localhost:3000 \
-            -r zap-report.html
+            -r zap-report.html \
+            -I
 
       - name: Copy ZAP Report
         run: |
