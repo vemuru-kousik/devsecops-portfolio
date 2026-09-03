@@ -37,3 +37,39 @@ jobs:
         with:
           name: dependency-check-report
           path: reports/
+  
+  zap-dast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start Juice Shop
+        run: |
+          docker run -d \
+            --name juice-shop \
+            -p 3000:3000 \
+            bkimminich/juice-shop
+
+      - name: Wait for Juice Shop
+        run: |
+          echo "Waiting for Juice Shop..."
+          sleep 30
+
+      - name: Check Juice Shop
+        run: |
+          curl -I http://localhost:3000
+
+      - name: Run OWASP ZAP Baseline Scan
+        run: |
+          docker run --rm \
+            --network host \
+            -v "${{ github.workspace }}:/zap/wrk/:rw" \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py \
+            -t http://localhost:3000 \
+            -r zap-report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap-report.html 
