@@ -38,6 +38,9 @@ jobs:
           name: dependency-check-report
           path: reports/
   
+    # =========================
+  # OWASP ZAP DAST
+  # =========================
   zap-dast:
     runs-on: ubuntu-latest
 
@@ -58,7 +61,7 @@ jobs:
         run: |
           curl -I http://localhost:3000
 
-            - name: Prepare ZAP report directory
+      - name: Prepare ZAP report directory
         run: |
           mkdir -p zap-work
           chmod 777 zap-work
@@ -81,4 +84,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: zap-report
-          path: zap-report.html 
+          path: zap-report.html
